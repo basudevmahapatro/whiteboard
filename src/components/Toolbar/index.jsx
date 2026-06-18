@@ -1,0 +1,19 @@
+import {useContext} from 'react';
+import classes from "./index.module.css"
+import cx from "classnames"
+import { Slash, RectangleHorizontal, Circle, MoveRight } from 'lucide-react';
+import boardContext from '../../store/board-context';
+
+const Toolbar = () => {
+    const {activeToolItem, changeToolHandler} = useContext(boardContext);
+    return (
+        <div className={classes.container}>
+            <div className={cx(classes.toolItem, {[classes.active] : activeToolItem==="LINE"})} onClick= {() => changeToolHandler("LINE")}><Slash/></div>
+            <div className={cx(classes.toolItem, {[classes.active] : activeToolItem==="RECTANGLE"})} onClick= {() => changeToolHandler("RECTANGLE")}><RectangleHorizontal/></div>
+            <div className={cx(classes.toolItem, {[classes.active] : activeToolItem==="CIRCLE"})} onClick= {() => changeToolHandler("CIRCLE")}><Circle/></div>
+            <div className={cx(classes.toolItem, {[classes.active] : activeToolItem==="ARROW"})} onClick= {() => changeToolHandler("ARROW")}><MoveRight/></div>
+        </div>
+    );
+};
+
+export default Toolbar;
