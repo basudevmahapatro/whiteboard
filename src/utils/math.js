@@ -14,3 +14,16 @@ export const getArrowHeadsCoordinates = (x1, y1, x2, y2, arrowLength) => {
     y4,
   };
 };
+
+const distanceBetweenPoints = (x1, y1, x2, y2) => {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+export const isPointCloseToLine = (x1, y1, x2, y2, pointX, pointY) => {
+  const distToStart = distanceBetweenPoints(x1, y1, pointX, pointY);
+  const distToEnd = distanceBetweenPoints(x2, y2, pointX, pointY);
+  const distLine = distanceBetweenPoints(x1, y1, x2, y2);
+  return Math.abs(distToStart + distToEnd - distLine) < 0.1;
+};

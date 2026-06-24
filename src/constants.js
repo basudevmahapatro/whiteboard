@@ -8,4 +8,5 @@ export const COLORS = {
 }
 
 export const FILL_TOOL_TYPES = ["RECTANGLE", "CIRCLE"]
-export const SIZE_TOOL_TYPES = ["RECTANGLE", "CIRCLE", "LINE", "ARROW"]
+export const SIZE_TOOL_TYPES = ["RECTANGLE", "CIRCLE", "LINE", "ARROW", "TEXT"]
+export const STROKE_TOOL_TYPES = ["RECTANGLE", "CIRCLE", "LINE", "ARROW", "BRUSH", "TEXT"]

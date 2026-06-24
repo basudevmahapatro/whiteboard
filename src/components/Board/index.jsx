@@ -2,10 +2,12 @@ import { useContext, useEffect, useLayoutEffect, useRef } from 'react'
 import rough from 'roughjs';
 import boardContext from '../../store/board-context';
 import toolboxContext from '../../store/toolbox-context';
+import classes from "./index.module.css"
 
 function Board(){
     const canvasRef = useRef();
-    const {elements, boardMouseDownHandler, boardMouseMoveHandler, currentActionType, boardMouseUpHandler}  = useContext(boardContext);
+    const textAreaRef = useRef();
+    const {elements, boardMouseDownHandler, boardMouseMoveHandler, currentActionType, boardMouseUpHandler, textAreaBlurHandler}  = useContext(boardContext);
     const {toolboxState} = useContext(toolboxContext);
 
     useEffect(() => {
@@ -15,6 +17,14 @@ function Board(){
         canvas.width = window.innerWidth;
     }, []);
 
+    useEffect(() => {
+        if(currentActionType=="WRITING"){
+            const focusTimeout = setTimeout(() => {
+                textAreaRef.current?.focus();
+            }, 0);
+        }
+    }, [currentActionType]);
+
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
@@ -23,7 +33,32 @@ function Board(){
         const roughCanvas = rough.canvas(canvas); 
 
         elements.forEach((element) => {
-            roughCanvas.draw(element.roughEle);
+            switch (element.type) {
+                case "BRUSH":
+                    context.fillStyle = element.stroke;
+                    context.fill(element.path);
+                    context.restore();
+                    break;
+                
+                case "LINE":
+                case "RECTANGLE":
+                case "CIRCLE":
+                case "ARROW":
+                    roughCanvas.draw(element.roughEle);
+                    break;
+
+                case "TEXT":
+                    context.textBaseline = "top";
+                    context.font = `${element.size}px Caveat`;
+                    context.fillStyle = element.stroke;
+                    context.fillText(element.text, element.x1, element.y1);
+                    context.restore();
+                    break;
+
+                default:
+                    console.warn("Unknown element type:", element.type);
+                    break;
+            }
         });
 
         return () => {
@@ -36,7 +71,7 @@ function Board(){
     };
 
     const handleMouseMove = (event) => {
-        if(currentActionType=="DRAWING") boardMouseMoveHandler(event, toolboxState);
+        if(currentActionType=="DRAWING" || currentActionType=="ERASING") boardMouseMoveHandler(event, toolboxState);
     };
 
     const handleMouseUp = () => {
@@ -45,7 +80,23 @@ function Board(){
 
     return (
     <div className='app'>
-        <canvas ref={canvasRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}/>
+        <>
+            {currentActionType === "WRITING" && <textarea
+                ref={textAreaRef}
+                type="text"
+                className = {classes.textElementBox}
+                style={{
+                    top: elements[elements.length-1].y1,
+                    left: elements[elements.length-1].x1,
+                    fontSize: `${elements[elements.length-1]?.size}px`,
+                    color: elements[elements.length-1].stroke,
+                    zIndex: 2,
+                }}
+
+                onBlur={(event) => textAreaBlurHandler(event.target.value, toolboxState)}
+            />}
+            <canvas id='canvas' ref={canvasRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}/>
+        </>
     </div>
   )
 }
