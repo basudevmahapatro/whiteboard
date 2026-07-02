@@ -7,7 +7,7 @@ import classes from "./index.module.css"
 function Board(){
     const canvasRef = useRef();
     const textAreaRef = useRef();
-    const {elements, boardMouseDownHandler, boardMouseMoveHandler, currentActionType, boardMouseUpHandler, textAreaBlurHandler}  = useContext(boardContext);
+    const {elements, boardMouseDownHandler, boardMouseMoveHandler, currentActionType, boardMouseUpHandler, textAreaBlurHandler,undoHandler,redoHandler}  = useContext(boardContext);
     const {toolboxState} = useContext(toolboxContext);
 
     useEffect(() => {
@@ -24,6 +24,24 @@ function Board(){
             }, 0);
         }
     }, [currentActionType]);
+    
+useEffect(() => {
+    const handleKeyDown = (event) => {
+        if (event.ctrlKey && event.key === "z") {
+            event.preventDefault();
+            undoHandler();
+        } else if (event.ctrlKey && event.key === "y") {
+            event.preventDefault();
+            redoHandler();
+        }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+    };
+}, [undoHandler, redoHandler]);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;

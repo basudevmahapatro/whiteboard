@@ -9,7 +9,9 @@ const gen = rough.generator();
 const initialBoardState = {
     activeToolItem: "BRUSH",
     currentActionType: "NONE",
-    elements : []
+    elements : [],
+    history : [[]],
+    index : 0
 }
 
 const boardReducer = (state, action) => {
@@ -72,7 +74,21 @@ const boardReducer = (state, action) => {
         }
 
         case "DRAW_UP": {
-            return {...state, currentActionType: "NONE"};
+            const elementsCopy = [...state.elements];
+            if(state.index===state.history.length-1){
+                return {...state, 
+                    currentActionType: "NONE",
+                    history : [...state.history, elementsCopy],
+                    index: state.index+1
+                };
+            }else{
+                const trimmedHistory = state.history.slice(0,state.index+1);
+                return {...state,
+                    currentActionType: "NONE",
+                    history : [...trimmedHistory, elementsCopy],
+                    index: state.index+1
+                }
+            }
         }
 
         case "CHANGE_TEXT" : {
@@ -93,6 +109,22 @@ const boardReducer = (state, action) => {
             });
 
             return {...state, elements : newElements};
+        }
+
+        case "UNDO": {
+            if(state.index==0) return state;
+            return {...state,
+                index: state.index-1,
+                elements : [...state.history[state.index-1]]
+            }
+        }
+
+        case "REDO": {
+            if(state.index+1>=state.history.length) return state;
+            return {...state,
+                index: state.index+1,
+                elements : [...state.history[state.index+1]]
+            }
         }
         
         default :
@@ -182,8 +214,16 @@ const BoardProvider = ({ children }) => {
         if(boardState.currentActionType==="WRITING"){
             return;
         }
+         if(boardState.currentActionType==="DRAWING" || boardState.currentActionType==="ERASING"){
+            dispatchBoardAction({
+                type : "DRAW_UP"
+            });
+        }
         dispatchBoardAction({
-            type : "DRAW_UP"
+            type: "CHANGE_CURRENT_ACTION_TYPE",
+            payload : {
+                currentAction: "NONE"
+            }
         });
     };
 
@@ -197,6 +237,36 @@ const BoardProvider = ({ children }) => {
                 size
             }
         })
+        dispatchBoardAction({
+                type : "DRAW_UP"
+        });
+        dispatchBoardAction({
+            type: "CHANGE_CURRENT_ACTION_TYPE",
+            payload : {
+                currentAction: "NONE"
+            }
+        });
+    };
+
+    const undoHandler = () => {
+        dispatchBoardAction({
+            type : "UNDO"
+        })
+    };
+
+    const redoHandler = (text, toolboxState) => {
+        dispatchBoardAction({
+            type : "REDO"
+        })
+    };
+
+    const downloadClickHandler = () => {
+        const canvas = document.getElementById("canvas");
+        const data = canvas.toDataURL("image/png"); 
+        const anchor =  document.createElement("a");
+        anchor.href = data;
+        anchor.download = "board.png";
+        anchor.click();
     };
 
     const boardContextValue = {
@@ -207,7 +277,12 @@ const BoardProvider = ({ children }) => {
         boardMouseDownHandler,
         boardMouseMoveHandler,
         boardMouseUpHandler,
-        textAreaBlurHandler
+        textAreaBlurHandler,
+        downloadClickHandler,
+        history: boardState.history,
+        index: boardState.index,
+        undoHandler, 
+        redoHandler
     }
 
     return (

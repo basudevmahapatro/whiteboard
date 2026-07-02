@@ -9,6 +9,10 @@ const boardContext = createContext({
     boardMouseMoveHandler: () => {},
     boardMouseUpHandler: () => {},
     textAreaBlurHandler: () => {},
+    undo: () => {},
+    redo: () => {},
+    history : [[]],
+    index: 0
 })
 
 export default boardContext;
