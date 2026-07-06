@@ -8,9 +8,10 @@ const boardContext = createContext({
     boardMouseDownHandler: () => {},
     boardMouseMoveHandler: () => {},
     boardMouseUpHandler: () => {},
+    downloadClickHandler: () => {},
     textAreaBlurHandler: () => {},
-    undo: () => {},
-    redo: () => {},
+    undoHandler: () => {},
+    redoHandler: () => {},
     history : [[]],
     index: 0
 })
