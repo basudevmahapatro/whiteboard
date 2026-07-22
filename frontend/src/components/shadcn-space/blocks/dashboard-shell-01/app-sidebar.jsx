@@ -8,7 +8,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import Logo from "@/assets/logo/logo";
+
 import { NavMain } from "@/components/shadcn-space/blocks/dashboard-shell-01/nav-main";
 import {
   Home,
@@ -17,6 +17,7 @@ import {
   Clock,
   Trash2,
   Settings,
+  Pen,
 } from "lucide-react";
 import { SiteHeader } from "@/components/shadcn-space/blocks/dashboard-shell-01/site-header";
 import SimpleBar from "simplebar-react";
@@ -41,15 +42,12 @@ const AppSidebar = ({
     <SidebarProvider>
       <Sidebar className="py-4 px-0 bg-background">
         <div className="flex flex-col gap-6 bg-background">
-
-          <SidebarHeader className="py-0 px-4">
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <a href="#" className="w-full h-full">
-                  <Logo />
-                </a>
-              </SidebarMenuItem>
-            </SidebarMenu>
+          <SidebarHeader className="px-6 py-2">
+            <div className="flex items-center gap-2.5 pointer-events-none select-none">
+              <h1 className="text-xl md:text-2xl font-black tracking-tight text-black dark:text-white">
+                Drawkitect
+              </h1>
+            </div>
           </SidebarHeader>
 
           <SidebarContent className="overflow-hidden gap-0 px-0">

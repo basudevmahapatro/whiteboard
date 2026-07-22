@@ -85,18 +85,6 @@ const LoginForm = () => {
       <div className="py-10 md:py-20 max-w-lg px-4 sm:px-0 mx-auto w-full">
         <Card className="max-w-lg px-6 py-8 sm:p-12 relative gap-6">
           <CardHeader className="text-center gap-6 p-0">
-            <div className="mx-auto">
-              <a href="">
-                <img
-                  src="https://images.shadcnspace.com/assets/logo/logo-icon-black.svg"
-                  alt="shadcnspace"
-                  className="dark:hidden h-10 w-10" />
-                <img
-                  src="https://images.shadcnspace.com/assets/logo/logo-icon-white.svg"
-                  alt="shadcnspace"
-                  className="hidden dark:block h-10 w-10" />
-              </a>
-            </div>
             <div className="flex flex-col gap-1">
               <CardTitle className="text-2xl font-medium text-card-foreground">
                 Welcome to Drawkitect

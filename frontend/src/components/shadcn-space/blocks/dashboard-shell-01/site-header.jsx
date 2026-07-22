@@ -2,7 +2,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import UserDropdown from "@/components/shadcn-space/blocks/dashboard-shell-01/user-dropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import NotificationDropdown from "@/components/shadcn-space/blocks/dashboard-shell-01/notification-dropdown";
-import { BellRing, SearchIcon } from "lucide-react";
+import { BellRing, SearchIcon, Pen } from "lucide-react";
 import {
   InputGroup,
   InputGroupAddon,
@@ -11,7 +11,7 @@ import {
 
 export function SiteHeader() {
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full items-center justify-between relative">
       <div className="flex items-center gap-2">
         <SidebarTrigger className="-ml-1 h-8 w-8 cursor-pointer" />
         {/* <InputGroup className="h-9 rounded-md"> */}
@@ -21,6 +21,9 @@ export function SiteHeader() {
           </InputGroupAddon>
         </InputGroup> */}
       </div>
+
+
+
       <div className="flex items-center gap-3">
         {/* <NotificationDropdown
           defaultOpen={false}

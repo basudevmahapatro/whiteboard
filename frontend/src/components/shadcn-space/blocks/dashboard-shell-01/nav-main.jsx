@@ -80,7 +80,7 @@ export function NavMain({
                 onClick={() => item.href && item.href !== "#" && navigate(item.href)}
                 className={cn("rounded-lg text-sm px-3 py-2 h-9 cursor-pointer", isActive
                   ? "bg-primary hover:bg-primary dark:bg-blue-500 text-white dark:hover:bg-blue-500 hover:text-white"
-                  : "")}>
+                  : "hover:bg-muted hover:text-foreground")}>
                 {item.icon && <item.icon />}
                 <span className="w-full">
                   {item.title}

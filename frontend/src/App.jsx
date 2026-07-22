@@ -14,6 +14,7 @@ import VerifyOtp from './pages/VerifyOtp.jsx';
 import RegisterLayout from './layouts/RegisterLayout.jsx';
 import CanvasGrid from './components/CanvasGrid';
 import Whiteboard from './pages/Whiteboard.jsx';
+import Landing from './pages/Landing.jsx';
 
 const InterceptorConfig = ({ children }) => {
   const { setAccessToken, logout } = useAuth();
@@ -31,6 +32,7 @@ function App() {
       <InterceptorConfig>
         <Routes>
 
+          <Route path='/' element={<Landing />} />
           <Route path='/login' element={<Login />} />
           <Route path='/forgotPassword' element={<ForgotPassword />} />
 
