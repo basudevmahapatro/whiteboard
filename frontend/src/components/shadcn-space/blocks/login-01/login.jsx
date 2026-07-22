@@ -59,7 +59,7 @@ const LoginForm = () => {
       }
 
       login(response.data.accessToken, response.data.user);
-      navigate("/workspace/home");
+      navigate("/workspace");
     } catch (requestError) {
       setLoginAlert({
         id: 1,
